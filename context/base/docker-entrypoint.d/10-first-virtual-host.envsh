@@ -1,0 +1,4 @@
+# shellcheck shell=sh
+
+FIRST_VIRTUAL_HOST=$(echo "${VIRTUAL_HOST:-localhost}" | awk '{print $1;}')
+export FIRST_VIRTUAL_HOST

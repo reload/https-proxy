@@ -8,16 +8,10 @@ COPY /base /
 RUN apk add --no-cache \
     bash=~5 \
     ca-certificates=~20240226 \
-    gnutls-utils=~3 \
-    tini=~0
+    gnutls-utils=~3
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
-
-SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
-
-ENTRYPOINT [ "/sbin/tini", "--", "/usr/local/bin/entrypoint" ]
-CMD [ "nginx", "-g", "daemon off;" ]
 
 ##
 #  Drupal

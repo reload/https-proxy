@@ -1,24 +1,11 @@
-#!/usr/bin/env bash
+# shellcheck shell=sh
 
-set -euo pipefail
-
-FIRST_VIRTUAL_HOST=$(awk '{print $1;}' <<<"${VIRTUAL_HOST:-localhost}")
-export FIRST_VIRTUAL_HOST
-
-echo "export FIRST_VIRTUAL_HOST=${FIRST_VIRTUAL_HOST}" >>/docker-entrypoint.d/10-first_virtual_host.envsh
-chmod +x /docker-entrypoint.d/10-first_virtual_host.envsh
-
-mkdir -p /cert
+mkdir -p /cert /etc/nginx/include.d
 
 CERT="/cert/${FIRST_VIRTUAL_HOST:-localhost}.crt"
 CERT_KEY="/cert/${FIRST_VIRTUAL_HOST:-localhost}.key"
 CA_CERT="/rootCA/rootCA.pem"
 CA_KEY="/rootCA/rootCA-key.pem"
-
-# if [ ! -r "${CA_CERT}" ] || [ ! -r "${CA_KEY}" ]; then
-# 	echo "No root certificate, skipping certificate generation"
-# 	exit 0
-# fi
 
 IP_ADDRESS=$(hostname -i)
 export IP_ADDRESS
@@ -43,5 +30,4 @@ if [ -r "${CA_CERT}" ]; then
 	/usr/sbin/update-ca-certificates
 fi
 
-mkdir -p /etc/nginx/include.d
 envsubst </etc/ssl.conf.template >/etc/nginx/include.d/ssl.conf
