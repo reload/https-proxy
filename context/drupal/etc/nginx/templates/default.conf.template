@@ -3,12 +3,8 @@
 # and https://blog.john-pfeiffer.com/drupal-with-docker-compose-and-nginx-and-php-fpm-and-mariadb/
 server {
 
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name "${FIRST_VIRTUAL_HOST}";
-    ssl_certificate     /cert/${FIRST_VIRTUAL_HOST}.crt;
-    ssl_certificate_key /cert/${FIRST_VIRTUAL_HOST}.key;
-
+    include include.d/ssl.conf;
+    
     root /var/www/web;
 
     disable_symlinks off;
