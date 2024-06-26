@@ -1,0 +1,13 @@
+# Based on https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/
+# and https://github.com/rpayanm/drupal/blob/master/nginx/default
+# and https://blog.john-pfeiffer.com/drupal-with-docker-compose-and-nginx-and-php-fpm-and-mariadb/
+server {
+
+    include include.d/ssl.conf;
+    
+    root /var/www/web;
+
+    location / {
+    	proxy_pass ${NGINX_PROXY_PASS};
+    }
+}

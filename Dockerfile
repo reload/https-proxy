@@ -28,3 +28,17 @@ COPY /drupal /
 
 ENV NGINX_FASTCGI_PASS_HOST php
 ENV NGINX_FASTCGI_PASS_PORT 9000
+
+##
+#  Proxy
+##
+FROM base AS proxy
+
+COPY /proxy /
+
+##
+#  NextJS
+##
+FROM base AS nextjs
+
+COPY /nextjs /
