@@ -1,4 +1,4 @@
-FROM nginx:1.26.1-alpine3.19-slim@sha256:ce01dacf330fdcbc3c93926291ab027396e7e9680a4180318b06e86525d1aa9f
+FROM nginx:1.27.0-alpine3.19-slim@sha256:66943ac4a1ca7f111097d3c656939dfe8ae2bc8314bb45d6d80419c5fb25e304
 
 COPY context/ /
 
