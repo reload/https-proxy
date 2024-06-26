@@ -33,3 +33,6 @@ certtool --generate-certificate --load-request /tmp/request.pem --load-ca-certif
 
 cp "${CA_CERT}" /usr/local/share/ca-certificates/
 /usr/sbin/update-ca-certificates
+
+mkdir -p /etc/nginx/include.d
+envsubst </etc/ssl.conf.template >/etc/nginx/include.d/ssl.conf

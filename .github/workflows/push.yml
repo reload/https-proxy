@@ -6,12 +6,23 @@ permissions:
   contents: read
 
 jobs:
+  derivates:
+    name: Lookup derivates
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ env.derivates }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lookup derivates
+        run: echo "derivates=$(make _derivates)" >> "$GITHUB_ENV"
   build:
     name: HTTPS Proxy
     runs-on: ubuntu-22.04
+    needs: derivates
     strategy:
       fail-fast: false
       matrix:
+        derivate: ${{ fromJSON(needs.derivates.outputs.matrix) }}
         platform: [linux/arm64, linux/amd64]
     steps:
       - uses: actions/checkout@v4
@@ -20,25 +31,26 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@master
-      - name: Build HTTPS proxy (${{ matrix.platform }})
+      - name: Build HTTPS ${{ matrix.derivate }} proxy (${{ matrix.platform }})
         uses: docker/build-push-action@v6
         with:
           file: "Dockerfile"
+          target: ${{ matrix.derivate }}
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: context
           platforms: ${{ matrix.platform }}
           labels: |
-            org.opencontainers.image.title=HTTPS proxy
-            org.opencontainers.image.description=Docker image for HTTPS proxy
+            org.opencontainers.image.title=HTTPS ${{ matrix.derivate }} proxy
+            org.opencontainers.image.description=Docker image for HTTPS ${{ matrix.derivate }} proxy
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ github.sha }}
+            org.opencontainers.image.version=${{ matrix.derivate }}-${{ github.sha }}
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-          load: ${{ (matrix.platform == 'linux/amd64') }}
+            ghcr.io/${{ github.repository }}:${{ matrix.derivate }}
+          load: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
       - uses: e1himself/goss-installation-action@v1.2.1
-        if: ${{ (matrix.platform == 'linux/amd64') }}
+        if: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
       - name: Test HTTPS proxy
-        if: ${{ (matrix.platform == 'linux/amd64') }}
+        if: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
         run: |
           make test

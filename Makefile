@@ -1,18 +1,22 @@
-PLATFORMS=$(shell docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
+PLATFORM=$(shell docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
+DERIVATIVES=$(shell ls context)
 
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := all
 .PHONY: all build clean help _platforms test
 
-all: PLATFORMS=linux/amd64,linux/arm64
+all: $(DERIVATIVES) ## Build Docker images for all derivatives
 
 help: ## Display a list of the public targets
 	@grep -E -h "^[a-z]+:.*##" $(MAKEFILE_LIST) | sed -e 's/\(.*\):.*## *\(.*\)/\1|\2/' | column -s '|' -t
 
+_derivates: ## Output platforms as JSON list
+	@echo $(DERIVATIVES) | jq --compact-output --raw-input 'split(" ") | map(select(. != ""))'
+
 _platforms: ## Output platforms as JSON list
 	@echo $(PLATFORMS) | jq --compact-output --raw-input 'split(",") | map(select(. != ""))'
 
-build: ## Build Docker image for the HTTPS proxy
-	docker buildx build --platform=$(PLATFORMS) --file Dockerfile --tag ghcr.io/reload/https-proxy:latest --load .
+$(DERIVATIVES): Dockerfile context ## Build Docker image for derivative
+	docker buildx build --target $@ --platform=$(PLATFORM) --file Dockerfile --tag ghcr.io/reload/https-proxy:$@ --load context
 
-test:
-	dgoss run -e PROFILE=none ghcr.io/reload/https-proxy:latest
+test: base
+	dgoss run ghcr.io/reload/https-proxy:base
