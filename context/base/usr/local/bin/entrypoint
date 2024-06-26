@@ -1,5 +1,0 @@
-#!/bin/sh
-
-/bin/run-parts --exit-on-error /etc/entrypoint.d
-
-exec /docker-entrypoint.sh "$@"
