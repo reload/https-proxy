@@ -1,0 +1,44 @@
+---
+name: Docker build
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: HTTPS Proxy
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [linux/arm64, linux/amd64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+      - name: Build HTTPS proxy (${{ matrix.platform }})
+        uses: docker/build-push-action@v5
+        with:
+          file: "Dockerfile"
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: |
+            org.opencontainers.image.title=HTTPS proxy
+            org.opencontainers.image.description=Docker image for HTTPS proxy
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+          load: ${{ (matrix.platform == 'linux/amd64') }}
+      - uses: e1himself/goss-installation-action@v1.2.1
+        if: ${{ (matrix.platform == 'linux/amd64') }}
+      - name: Test HTTPS proxy
+        if: ${{ (matrix.platform == 'linux/amd64') }}
+        run: |
+          make test

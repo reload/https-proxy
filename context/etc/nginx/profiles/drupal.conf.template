@@ -1,0 +1,55 @@
+# Based on https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/
+# and https://github.com/rpayanm/drupal/blob/master/nginx/default
+# and https://blog.john-pfeiffer.com/drupal-with-docker-compose-and-nginx-and-php-fpm-and-mariadb/
+server {
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name "${FIRST_VIRTUAL_HOST}";
+    ssl_certificate     /cert/${FIRST_VIRTUAL_HOST}.crt;
+    ssl_certificate_key /cert/${FIRST_VIRTUAL_HOST}.key;
+
+    root /var/www/web;
+
+    disable_symlinks off;
+
+    location / {
+        try_files $uri /index.php?$query_string;
+    }
+
+    location @rewrite {
+        rewrite ^/(.*)$ /index.php?q=$1;
+    }
+
+    location ~ \.php(/|$) {
+        fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
+        include fastcgi_params;
+        # Block httpoxy attacks. See https://httpoxy.org/.
+        fastcgi_param HTTP_PROXY "";
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param REMOTE_ADDR $realip_remote_addr;
+        fastcgi_intercept_errors on;
+        fastcgi_pass ${NGINX_FASTCGI_PASS_HOST}:${NGINX_FASTCGI_PASS_PORT};
+        # Avoid the error "upstream sent too big header while reading response
+        # header from upstream" by bumping fcgi buffer size.
+        fastcgi_buffers 16 32k;
+        fastcgi_buffer_size 64k;
+        fastcgi_busy_buffers_size 64k;
+    }
+
+    location ~ ^/sites/.*/files/styles/ {
+        try_files $uri @rewrite;
+    }
+
+    # Handle private files through Drupal.
+    location ~ ^(/[a-z\-]+)?/system/files/ {
+        try_files $uri /index.php?$query_string;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        try_files $uri @rewrite;
+        expires max;
+        log_not_found off;
+    }
+}

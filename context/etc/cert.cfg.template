@@ -1,0 +1,5 @@
+organization = "Development certificate"
+unit = "${HOSTNAME}"
+cn = "${FIRST_VIRTUAL_HOST}"
+expiration_days = 30
+ip_address = "${IP_ADDRESS}"

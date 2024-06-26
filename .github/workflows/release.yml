@@ -1,0 +1,48 @@
+---
+name: Release
+on:
+  workflow_run:
+    workflows: ["Docker build"]
+    branches: [main]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: HTTPS proxy
+    runs-on: ubuntu-22.04
+    if: >-
+      ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT_TOKEN }}
+      - name: Build HTTPS proxy
+        uses: docker/build-push-action@v5
+        with:
+          file: "Dockerfile"
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          context: .
+          platforms: linux/amd64,linux/arm64
+          labels: |
+            org.opencontainers.image.title=HTTPS proxy
+            org.opencontainers.image.description=Docker image for HTTPS proxy
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:latest

@@ -1,0 +1,10 @@
+---
+process:
+  nginx:
+    running: true
+
+port:
+  tcp6:80:
+    listening: true
+    ip:
+      - '::'
