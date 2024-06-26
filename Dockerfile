@@ -39,6 +39,6 @@ COPY /proxy /
 ##
 #  NextJS
 ##
-FROM base AS nextjs
+FROM proxy AS nextjs
 
 COPY /nextjs /
