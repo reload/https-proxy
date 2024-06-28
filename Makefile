@@ -16,4 +16,4 @@ $(DERIVATIVES): ## Build Docker image for derivative
 	docker buildx build --target $@ --platform=$(PLATFORM) --file Dockerfile --tag ghcr.io/reload/https-proxy:$@ --load context
 
 test: base
-	dgoss run ghcr.io/reload/https-proxy:base
+	GOSS_SLEEP=5 dgoss run ghcr.io/reload/https-proxy:base
