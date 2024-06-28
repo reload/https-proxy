@@ -1,5 +1,6 @@
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name "${FIRST_VIRTUAL_HOST}";
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+
     ssl_certificate     /cert/${FIRST_VIRTUAL_HOST}.crt;
     ssl_certificate_key /cert/${FIRST_VIRTUAL_HOST}.key;
