@@ -1,5 +1,5 @@
 organization = "Development certificate"
 unit = "${HOSTNAME}"
 cn = "${FIRST_VIRTUAL_HOST}"
-expiration_days = 30
+expiration_days = ${EXPIRATION_DAYS}
 ip_address = "${IP_ADDRESS}"

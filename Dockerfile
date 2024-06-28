@@ -6,12 +6,13 @@ FROM nginx:1.27.0-alpine3.19-slim@sha256:66943ac4a1ca7f111097d3c656939dfe8ae2bc8
 COPY /base /
 
 RUN apk add --no-cache \
-    bash=~5 \
     ca-certificates=~20240226 \
     gnutls-utils=~3
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
+
+ENV EXPIRATION_DAYS 30
 
 ##
 #  Drupal
