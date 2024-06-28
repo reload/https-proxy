@@ -13,6 +13,8 @@ RUN apk add --no-cache \
 ARG workdir=/var/www
 WORKDIR "${workdir}"
 
+ENV EXPIRATION_DAYS 30
+
 ##
 #  Drupal
 ##
