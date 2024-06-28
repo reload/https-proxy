@@ -61,3 +61,20 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.derivate }}
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-22.04
+    needs:
+      - derivates
+      - build
+    steps:
+      - name: Count how many images to keep
+        id: count
+        run: >-
+          echo "keep_images=$(jq '. | length * 5' <<< '${{ needs.derivates.outputs.matrix }}')" >> "$GITHUB_OUTPUT"
+      - name: Delete old container packages
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ github.event.repository.name }}
+          package-type: container
+          min-versions-to-keep: ${{ steps.count.outputs.keep_images }}
