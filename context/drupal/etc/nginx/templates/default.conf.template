@@ -3,12 +3,6 @@
 # and https://blog.john-pfeiffer.com/drupal-with-docker-compose-and-nginx-and-php-fpm-and-mariadb/
 
 server {
-    listen 80 default_server;
-    server_name _;
-    return 301 https://$host$request_uri;
-}
-
-server {
 
     include include.d/ssl.conf;
     
