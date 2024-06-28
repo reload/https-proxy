@@ -10,7 +10,7 @@ CA_KEY="/rootCA/rootCA-key.pem"
 IP_ADDRESS=$(hostname -i)
 export IP_ADDRESS
 
-envsubst </etc/cert.cfg.template >/tmp/cert.cfg
+envsubst </etc/https-proxy/cert.cfg.template >/tmp/cert.cfg
 
 for host in ${VIRTUAL_HOST:-localhost}; do
 	echo "dns_name = $host" >>/tmp/cert.cfg
@@ -30,4 +30,4 @@ if [ -r "${CA_CERT}" ]; then
 	/usr/sbin/update-ca-certificates
 fi
 
-envsubst </etc/ssl.conf.template >/etc/nginx/include.d/ssl.conf
+envsubst </etc/https-proxy/ssl.conf.template >/etc/nginx/include.d/ssl.conf
