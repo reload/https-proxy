@@ -96,6 +96,15 @@ image: ghcr.io/arnested/https-proxy:drupal
 See the configuration details in
 [`context/drupal/etc/nginx/templates/default.conf.template`](context/drupal/etc/nginx/templates/default.conf.template).
 
+Use can use the following configuration in your `docker-compose.yml`:
+
+```yaml
+environment:
+  NGINX_FASTCGI_PASS_HOST: php
+  NGINX_FASTCGI_PASS_PORT: 9000
+  NGINX_CLIENT_MAX_BODY_SIZE: 128M
+```
+
 ## Base image
 
 There is also a base configuration that comes with no prefined
@@ -113,13 +122,6 @@ following:
 
 ```nginx
 include include.d/ssl.conf;
-```
-
-```yaml
-environment:
-  NGINX_FASTCGI_PASS_HOST: php
-  NGINX_FASTCGI_PASS_PORT: 9000
-  NGINX_CLIENT_MAX_BODY_SIZE: 128M
 ```
 
 > [!NOTE]
