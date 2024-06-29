@@ -38,3 +38,5 @@ COPY /proxy /
 FROM proxy AS nextjs
 
 COPY /nextjs /
+
+ENV NGINX_PROXY_PASS app:3000
