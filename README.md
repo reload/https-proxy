@@ -9,7 +9,7 @@ environments.
 ## HTTPS configuration
 
 The proxy uses a self-signed certificate for HTTPS. You can use a root
-certificate, e.g. one generated with mkcert to avoid browser
+certificate, e.g., one generated with mkcert to avoid browser
 warnings.
 
 Mount the root certificate like this
@@ -38,7 +38,7 @@ environment:
   VIRTUAL_HOST: example.local
 ```
 
-## Predifined configurations
+## Predefined configurations
 
 This nginx proxy comes with three predefined configurations:
 
@@ -67,8 +67,8 @@ environment:
 
 ### Next.js
 
-Next.js is like proxy but also forwards websocket connections on the
-path `/_next/webpack-hmr`.
+Next.js is like the proxy configuration but also forwards WebSocket
+connections on the path `/_next/webpack-hmr`.
 
 ```yaml
 image: ghcr.io/arnested/https-proxy:nextjs
@@ -107,7 +107,7 @@ environment:
 
 ## Base image
 
-There is also a base configuration that comes with no prefined
+There is also a base configuration that comes with no predefined
 configuration.
 
 ```yaml
@@ -126,8 +126,8 @@ include include.d/ssl.conf;
 
 > [!NOTE]
 >
-> This is image is meant to replace
-> [drupal-apache-fpm](https://github.com/reload/drupal-apache-fpm)
+> This image is meant to replace
+> [drupal-apache-fpm](https://github.com/reload/drupal-apache-fpm),
 > which we have used for most of our projects.
 >
 > The new approach is smaller (due to using nginx), more inline with
