@@ -37,3 +37,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run Yamllint
         uses: frenck/action-yamllint@v1.5.0
+  nginx:
+    name: nginx configuration
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gixy
+        run: pip install gixy
+      - name: Run gixy
+        run: find . -name \*.conf.template -print0 | xargs -0 gixy --disable-includes -lll
