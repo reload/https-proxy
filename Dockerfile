@@ -42,3 +42,12 @@ FROM proxy AS nextjs
 COPY /nextjs /
 
 ENV NGINX_PROXY_PASS http://app:3000
+
+##
+#  Storybook
+##
+FROM proxy AS storybook
+
+COPY /storybook /
+
+ENV NGINX_PROXY_PASS http://app:6006
