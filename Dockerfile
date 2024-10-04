@@ -51,4 +51,3 @@ FROM proxy AS storybook
 COPY /storybook /
 
 ENV NGINX_PROXY_PASS=http://app:6006
-ENV SERVER_CHANNEL_PROXY_PASS=ws://app:6006/storybook-server-channel
