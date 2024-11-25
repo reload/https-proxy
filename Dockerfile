@@ -15,6 +15,7 @@ WORKDIR "${workdir}"
 HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":443"
 
 ENV EXPIRATION_DAYS=30
+ENV NGINX_DOCUMENT_ROOT=/var/www/web
 
 ##
 #  Drupal
