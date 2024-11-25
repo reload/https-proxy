@@ -83,7 +83,7 @@ Use can use the following configuration in your `docker-compose.yml`:
 ```yaml
 environment:
   NGINX_DOCUMENT_ROOT: /var/www/web
-  NGINX_PROXY_PASS: app:3000
+  NGINX_PROXY_PASS: http://app:3000
 ```
 
 ### Drupal
