@@ -2,7 +2,7 @@ server {
 
     include include.d/ssl.conf;
     
-    root /var/www/web;
+    root ${NGINX_DOCUMENT_ROOT};
 
     location / {
         proxy_pass ${NGINX_PROXY_PASS};

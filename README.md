@@ -62,6 +62,7 @@ Use can use the following configuration in your `docker-compose.yml`:
 
 ```yaml
 environment:
+  NGINX_DOCUMENT_ROOT: /var/www/web
   NGINX_PROXY_PASS: <no default>
 ```
 
@@ -81,6 +82,7 @@ Use can use the following configuration in your `docker-compose.yml`:
 
 ```yaml
 environment:
+  NGINX_DOCUMENT_ROOT: /var/www/web
   NGINX_PROXY_PASS: app:3000
 ```
 
@@ -100,6 +102,7 @@ Use can use the following configuration in your `docker-compose.yml`:
 
 ```yaml
 environment:
+  NGINX_DOCUMENT_ROOT: /var/www/web
   NGINX_FASTCGI_PASS_HOST: php
   NGINX_FASTCGI_PASS_PORT: 9000
   NGINX_CLIENT_MAX_BODY_SIZE: 128M

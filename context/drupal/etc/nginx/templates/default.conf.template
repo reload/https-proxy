@@ -6,7 +6,7 @@ server {
 
     include include.d/ssl.conf;
     
-    root /var/www/web;
+    root ${NGINX_DOCUMENT_ROOT};
 
     disable_symlinks off;
 
