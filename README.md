@@ -1,8 +1,5 @@
 # HTTPS proxy
 
-> [!CAUTION]
-> Work in progress!
-
 A nginx proxy with HTTPS support for Docker Compose development
 environments.
 
@@ -23,12 +20,43 @@ volumes:
 > [!TIP]
 >
 > Install [mkcert](https://mkcert.dev) on your host machine and
-> generate and install a root certificate by running `mkcert -install`
-> on your host machine (one time only).
+> generate and install a root certificate on your host machine by
+> running (one time only).
+>
+> ```console
+> mkcert -install
+> ```
+
+### Mac users
+
+> [!TIP]
 >
 > Mac users should then do (one time only):
 >
-> `$ mkdir -p ~/.local/share && ln -s "$(mkcert -CAROOT)" ~/.local/share`
+> ```console
+> mkdir -p ~/.local/share && ln -s "$(mkcert -CAROOT)" ~/.local/share`
+> ```
+>
+> If you haven't installed mkcert yet, you can do so with Homebrew:
+>
+> ```console
+> brew install mkcert nss
+> ```
+>
+> [Dory](https://github.com/FreedomBen/dory) users must adjust their
+> config (run `dory config` or edit `~/.dory.yml`):
+>
+> ```yaml
+> nginx_proxy:
+>     enabled: true
+>     container_name: dory_dinghy_http_proxy
+>     https_enabled: true
+>     # Update the follow line to point at the dev_certificates
+>     ssl_certs_dir: /Users/<username>/.local/share/dev_certificates
+>     image: codekitchen/dinghy-http-proxy:latest
+> ```
+>
+> Remeber to restart Dory.
 
 Use can use the following configuration for the generated certificate:
 
