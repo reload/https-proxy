@@ -81,7 +81,7 @@ Proxy is a generic configuration that just forwards requests to the
 backend.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:proxy
+image: ghcr.io/reload/https-proxy:proxy
 ```
 
 See the configuration details in
@@ -101,7 +101,7 @@ Next.js is like the proxy configuration but also forwards WebSocket
 connections on the path `/_next/webpack-hmr`.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:nextjs
+image: ghcr.io/reload/https-proxy:nextjs
 ```
 
 See the configuration details in
@@ -142,7 +142,7 @@ Drupal is a configuration that forwards requests to a Drupal
 development server.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:drupal
+image: ghcr.io/reload/https-proxy:drupal
 ```
 
 See the configuration details in
@@ -164,7 +164,7 @@ There is also a base configuration that comes with no predefined
 configuration.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:base
+image: ghcr.io/reload/https-proxy:base
 ```
 
 You can add your own configuration by mounting a volume to
