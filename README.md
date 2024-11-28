@@ -72,6 +72,7 @@ This nginx proxy comes with three predefined configurations:
 
 - Proxy
 - Next.js
+- Storybook
 - Drupal
 
 ### Proxy
@@ -80,7 +81,7 @@ Proxy is a generic configuration that just forwards requests to the
 backend.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:proxy
+image: ghcr.io/reload/https-proxy:proxy
 ```
 
 See the configuration details in
@@ -100,7 +101,7 @@ Next.js is like the proxy configuration but also forwards WebSocket
 connections on the path `/_next/webpack-hmr`.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:nextjs
+image: ghcr.io/reload/https-proxy:nextjs
 ```
 
 See the configuration details in
@@ -114,13 +115,34 @@ environment:
   NGINX_PROXY_PASS: http://app:3000
 ```
 
+### Storybook
+
+Storybook is like the proxy configuration but also forwards WebSocket
+connections on the paths `/__webpack-hmr` and
+`/storybook-server-channel`.
+
+```yaml
+image: ghcr.io/reload/https-proxy:storybook
+```
+
+See the configuration details in
+[`context/storybook/etc/nginx/templates/default.conf.template`](context/storybook/etc/nginx/templates/default.conf.template).
+
+Use can use the following configuration in your `docker-compose.yml`:
+
+```yaml
+environment:
+  NGINX_DOCUMENT_ROOT: /var/www/web
+  NGINX_PROXY_PASS: http://app:6006
+```
+
 ### Drupal
 
 Drupal is a configuration that forwards requests to a Drupal
 development server.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:drupal
+image: ghcr.io/reload/https-proxy:drupal
 ```
 
 See the configuration details in
@@ -142,7 +164,7 @@ There is also a base configuration that comes with no predefined
 configuration.
 
 ```yaml
-image: ghcr.io/arnested/https-proxy:base
+image: ghcr.io/reload/https-proxy:base
 ```
 
 You can add your own configuration by mounting a volume to
@@ -162,5 +184,6 @@ include include.d/ssl.conf;
 > which we have used for most of our projects.
 >
 > The new approach is smaller (due to using nginx), more inline with
-> current production hosting practice (nginx, again), also supports
-> Next.js, and should be easier to maintain and keep up-to-date.
+> current production hosting practice (nginx, again), should be easier
+> to maintain and keep up-to-date, and also supports Next.js,
+> Storybook, and generic proxies.
