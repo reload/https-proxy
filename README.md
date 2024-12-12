@@ -138,8 +138,8 @@ environment:
 
 ### Drupal
 
-Drupal is a configuration that forwards requests to a Drupal
-development server.
+Drupal is a configuration that forwards PHP-FPM requests to a Drupal
+development server. So strictly speaing this is not a proxy.
 
 ```yaml
 image: ghcr.io/reload/https-proxy:drupal
