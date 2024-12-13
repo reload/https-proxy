@@ -36,6 +36,15 @@ FROM base AS proxy
 COPY /proxy /
 
 ##
+#  Vite
+##
+FROM proxy AS vite
+
+COPY /vite /
+
+ENV NGINX_PROXY_PASS=http://app:5173
+
+##
 #  NextJS
 ##
 FROM proxy AS nextjs

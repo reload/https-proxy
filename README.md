@@ -71,6 +71,7 @@ environment:
 This nginx proxy comes with three predefined configurations:
 
 - Proxy
+- Vite
 - Next.js
 - Storybook
 - Drupal
@@ -93,6 +94,26 @@ Use can use the following configuration in your `docker-compose.yml`:
 environment:
   NGINX_DOCUMENT_ROOT: /var/www/web
   NGINX_PROXY_PASS: <no default>
+```
+
+### Vite
+
+Vite is like the proxy configuration but also forwards all WebSocket
+requests.
+
+```yaml
+image: ghcr.io/reload/https-proxy:vite
+```
+
+See the configuration details in
+[`context/vite/etc/nginx/templates/default.conf.template`](context/nextjs/etc/vite/templates/default.conf.template).
+
+Use can use the following configuration in your `docker-compose.yml`:
+
+```yaml
+environment:
+  NGINX_DOCUMENT_ROOT: /var/www/web
+  NGINX_PROXY_PASS: http://app:5173
 ```
 
 ### Next.js
