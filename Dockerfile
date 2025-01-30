@@ -1,12 +1,12 @@
 ##
 #  Base
 ##
-FROM nginx:1.27.0-alpine3.19-slim@sha256:a529900d9252ce5d04531a4a594f93736dbbe3ec155a692d10484be82aaa159a AS base
+FROM nginx:1.27.3-alpine-slim@sha256:5a56ae385906c5b43ccc99379bce883aa93dc0556d7f705ba501d819925e8fa1 AS base
 
 COPY /base /
 
 RUN apk add --no-cache \
-    ca-certificates=~20240226 \
+    ca-certificates=~20241121 \
     gnutls-utils=~3
 
 ARG workdir=/var/www
