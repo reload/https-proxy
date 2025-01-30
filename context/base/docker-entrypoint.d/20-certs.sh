@@ -7,13 +7,14 @@ CERT_KEY="/cert/${FIRST_VIRTUAL_HOST:-localhost}.key"
 CA_CERT="/rootCA/rootCA.pem"
 CA_KEY="/rootCA/rootCA-key.pem"
 
-IP_ADDRESS=$(hostname -i)
-export IP_ADDRESS
-
 envsubst </etc/https-proxy/cert.cfg.template >/tmp/cert.cfg
 
 for host in ${VIRTUAL_HOST:-localhost}; do
 	echo "dns_name = $host" >>/tmp/cert.cfg
+done
+
+for ip_address in $(hostname -i); do
+	echo "ip_address = $ip_address" >>/tmp/cert.cfg
 done
 
 certtool --generate-privkey --outfile "${CERT_KEY}"
