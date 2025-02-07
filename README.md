@@ -31,10 +31,11 @@ volumes:
 
 > [!TIP]
 >
-> Mac users should then do (one time only):
+> Mac users should do the following (one time only) while no
+> containers are running:
 >
 > ```console
-> mkdir -p ~/.local/share && ln -s "$(mkcert -CAROOT)" ~/.local/share`
+> mkdir -p ~/.local/share && find ~/.local/share -name mkcert -type d -delete && ln -s "$(mkcert -CAROOT)" ~/.local/share`
 > ```
 >
 > If you haven't installed mkcert yet, you can do so with Homebrew:
