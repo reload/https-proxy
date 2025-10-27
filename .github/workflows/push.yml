@@ -48,7 +48,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.derivate }}
           load: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
-      - uses: e1himself/goss-installation-action@v1.2.1
+      - uses: e1himself/goss-installation-action@v1.3.0
         if: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
       - name: Test HTTPS proxy
         if: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
