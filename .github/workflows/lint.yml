@@ -11,14 +11,14 @@ jobs:
     name: markdown
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v21
   dockerfile:
     name: dockerfile
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run hadolint
         uses: hadolint/hadolint-action@v3.3.0
         with:
@@ -27,21 +27,21 @@ jobs:
     name: shell scripts
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run ShellCheck
         uses: luizm/action-sh-checker@master
   yaml:
     name: yaml
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run Yamllint
         uses: frenck/action-yamllint@v1.5.0
   nginx:
     name: nginx configuration
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install gixy
         run: pip install gixy
       - name: Run gixy
