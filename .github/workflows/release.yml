@@ -18,7 +18,7 @@ jobs:
     outputs:
       matrix: ${{ env.derivates }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Lookup derivates
         run: echo "derivates=$(make _derivates)" >> "$GITHUB_ENV"
   build:
@@ -32,7 +32,7 @@ jobs:
       matrix:
         derivate: ${{ fromJSON(needs.derivates.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
