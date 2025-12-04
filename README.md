@@ -158,6 +158,24 @@ environment:
   NGINX_PROXY_PASS: http://app:6006
 ```
 
+If your're using Vite-based Storybook, you need to add the following lines to
+your viteFinal configuration `.storybook/main.ts`
+
+```typescript
+  async viteFinal(config) {
+    const { mergeConfig } = await import("vite");
+    return mergeConfig(config, {
+      // Existing config...
+      server: {
+        hmr: {
+          clientPort: 443,
+          protocol: "wss",
+        },
+      },
+    });
+  },
+```
+
 ### Drupal
 
 Drupal is a configuration that forwards PHP-FPM requests to a Drupal
