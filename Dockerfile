@@ -1,7 +1,7 @@
 ##
 #  Base
 ##
-FROM nginx:1.31.3-alpine-slim@sha256:d08612e21a01bcbb8dbcc4ebff7dc80be5422250acc67ec30dd3e636c3b987ce AS base
+FROM nginx:1.31.3-alpine-slim@sha256:45b82ed5f285b90d63df07ba70430fdd8f25624b416617d9e6dc93412b2006dc AS base
 
 COPY /base /
 
