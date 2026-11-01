@@ -6,7 +6,7 @@ FROM nginx:1.31.8-alpine-slim@sha256:f45171d36c76a8b2f5ef97108a3a8a2294248a6578a
 COPY /base /
 
 RUN apk add --no-cache \
-    ca-certificates=~20260909 \
+    ca-certificates=~20261020 \
     gnutls-utils=~3
 
 ARG workdir=/var/www
