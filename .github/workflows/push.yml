@@ -31,6 +31,19 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@master
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: type=raw,value=${{ matrix.derivate }}
+          flavor: latest=false
+          labels: |
+            org.opencontainers.image.title=HTTPS ${{ matrix.derivate }} proxy
+            org.opencontainers.image.description=Docker image for HTTPS ${{ matrix.derivate }} proxy
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.derivate }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
       - name: Build HTTPS ${{ matrix.derivate }} proxy (${{ matrix.platform }})
         uses: docker/build-push-action@v7
         with:
@@ -39,14 +52,9 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: context
           platforms: ${{ matrix.platform }}
-          labels: |
-            org.opencontainers.image.title=HTTPS ${{ matrix.derivate }} proxy
-            org.opencontainers.image.description=Docker image for HTTPS ${{ matrix.derivate }} proxy
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ matrix.derivate }}-${{ github.sha }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ matrix.derivate }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          tags: ${{ steps.meta.outputs.tags }}
           load: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
       - uses: e1himself/goss-installation-action@v1.3.0
         if: ${{ (matrix.platform == 'linux/amd64') && matrix.derivate == 'base' }}
