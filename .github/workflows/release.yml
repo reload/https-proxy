@@ -44,6 +44,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: index,manifest
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: type=raw,value=${{ matrix.derivate }}
+          flavor: latest=false
+          labels: |
+            org.opencontainers.image.title=HTTPS ${{ matrix.derivate }} proxy
+            org.opencontainers.image.description=Docker image for HTTPS ${{ matrix.derivate }} proxy
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.derivate }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
       - name: Build HTTPS ${{ matrix.derivate }} proxy
         uses: docker/build-push-action@v7
         with:
@@ -53,14 +68,9 @@ jobs:
           push: true
           context: context
           platforms: linux/amd64,linux/arm64
-          labels: |
-            org.opencontainers.image.title=HTTPS ${{ matrix.derivate }} proxy
-            org.opencontainers.image.description=Docker image for HTTPS ${{ matrix.derivate }} proxy
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ matrix.derivate }}-${{ github.sha }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ matrix.derivate }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          tags: ${{ steps.meta.outputs.tags }}
   cleanup:
     name: Cleanup
     runs-on: ubuntu-22.04
